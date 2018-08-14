@@ -2,6 +2,8 @@ package com.shaw.Service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class EmployeeService {
 	// 注入员工持久层
 	@Autowired
 	EmployeeMapper employeeMapper;
+	
+	private static final Logger log = Logger.getLogger(EmployeeService.class);
 
 	/**
 	 * 查询所有员工信息
@@ -24,7 +28,9 @@ public class EmployeeService {
 	 */
 	public List<Employee> getAll() {
 		// TODO Auto-generated method stub
-		return employeeMapper.selectByExampleWithDept(null);
+		List<Employee> selectByExampleWithDept = employeeMapper.selectByExampleWithDept(null);
+		log.info("=================查询一页的所有员工====================");
+		return selectByExampleWithDept;
 	}
 
 	/**
@@ -35,6 +41,7 @@ public class EmployeeService {
 	public void saveEmployee(Employee employee) {
 		// TODO Auto-generated method stub
 		employeeMapper.insert(employee);
+		log.info("=================插入新的员工信息====================");
 	}
 
 	/**
@@ -48,6 +55,7 @@ public class EmployeeService {
 		Criteria criteria = example.createCriteria();
 		criteria.andEmpNameEqualTo(empName);
 		long count = employeeMapper.countByExample(example);
+		log.info("=================判断员工名字是否重复====================");
 		return count == 0;
 	}
 
